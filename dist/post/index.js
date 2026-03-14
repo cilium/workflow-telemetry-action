@@ -54335,18 +54335,36 @@ function run() {
                 return;
             }
             logger.debug(`Current job: ${JSON.stringify(currentJob)}`);
-            // Finish step tracer
-            yield stepTracer.finish(currentJob);
-            // Finish stat collector
-            yield statCollector.finish(currentJob);
-            // Finish process tracer
-            yield processTracer.finish(currentJob);
-            // Report step tracer
-            const stepTracerContent = yield stepTracer.report(currentJob);
-            // Report stat collector
-            const stepCollectorContent = yield statCollector.report(currentJob);
-            // Report process tracer
-            const procTracerContent = yield processTracer.report(currentJob);
+            const enable_step_tracer = core.getInput('enable_step_tracer');
+            const enable_stat_collector = core.getInput('enable_stat_collector');
+            const enable_process_tracer = core.getInput('enable_process_tracer');
+            if (enable_step_tracer === 'true') {
+                // Finish step tracer
+                yield stepTracer.finish(currentJob);
+            }
+            if (enable_stat_collector === 'true') {
+                // Finish stat collector
+                yield statCollector.finish(currentJob);
+            }
+            if (enable_process_tracer === 'true') {
+                // Finish process tracer
+                yield processTracer.finish(currentJob);
+            }
+            let stepTracerContent = null;
+            if (enable_step_tracer === 'true') {
+                // Report step tracer
+                stepTracerContent = yield stepTracer.report(currentJob);
+            }
+            let stepCollectorContent = null;
+            if (enable_stat_collector === 'true') {
+                // Report stat collector
+                stepCollectorContent = yield statCollector.report(currentJob);
+            }
+            let procTracerContent = null;
+            if (enable_process_tracer === 'true') {
+                // Report process tracer
+                procTracerContent = yield processTracer.report(currentJob);
+            }
             let allContent = '';
             if (stepTracerContent) {
                 allContent = allContent.concat(stepTracerContent, '\n');

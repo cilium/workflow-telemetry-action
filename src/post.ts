@@ -126,21 +126,42 @@ async function run(): Promise<void> {
 
     logger.debug(`Current job: ${JSON.stringify(currentJob)}`)
 
-    // Finish step tracer
-    await stepTracer.finish(currentJob)
-    // Finish stat collector
-    await statCollector.finish(currentJob)
-    // Finish process tracer
-    await processTracer.finish(currentJob)
+    const enable_step_tracer = core.getInput('enable_step_tracer')
+    const enable_stat_collector = core.getInput('enable_stat_collector')
+    const enable_process_tracer = core.getInput('enable_process_tracer')
 
-    // Report step tracer
-    const stepTracerContent: string | null = await stepTracer.report(currentJob)
-    // Report stat collector
-    const stepCollectorContent: string | null =
-      await statCollector.report(currentJob)
-    // Report process tracer
-    const procTracerContent: string | null =
-      await processTracer.report(currentJob)
+    if (enable_step_tracer === 'true') {
+      // Finish step tracer
+      await stepTracer.finish(currentJob)
+    }
+
+    if (enable_stat_collector === 'true') {
+      // Finish stat collector
+      await statCollector.finish(currentJob)
+    }
+
+    if (enable_process_tracer === 'true') {
+      // Finish process tracer
+      await processTracer.finish(currentJob)
+    }
+
+    let stepTracerContent: string | null = null
+    if (enable_step_tracer === 'true') {
+      // Report step tracer
+      stepTracerContent = await stepTracer.report(currentJob)
+    }
+
+    let stepCollectorContent: string | null = null
+    if (enable_stat_collector === 'true') {
+      // Report stat collector
+      stepCollectorContent = await statCollector.report(currentJob)
+    }
+
+    let procTracerContent: string | null = null
+    if (enable_process_tracer === 'true') {
+      // Report process tracer
+      procTracerContent = await processTracer.report(currentJob)
+    }
 
     let allContent = ''
 

@@ -44408,6 +44408,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+const core = __importStar(__nccwpck_require__(2186));
 const stepTracer = __importStar(__nccwpck_require__(377));
 const statCollector = __importStar(__nccwpck_require__(6451));
 const processTracer = __importStar(__nccwpck_require__(6160));
@@ -44416,12 +44417,21 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             logger.info(`Initializing ...`);
-            // Start step tracer
-            yield stepTracer.start();
-            // Start stat collector
-            yield statCollector.start();
-            // Start process tracer
-            yield processTracer.start();
+            const enable_step_tracer = core.getInput('enable_step_tracer');
+            const enable_stat_collector = core.getInput('enable_stat_collector');
+            const enable_process_tracer = core.getInput('enable_process_tracer');
+            if (enable_step_tracer === 'true') {
+                // Start step tracer
+                yield stepTracer.start();
+            }
+            if (enable_stat_collector === 'true') {
+                // Start stat collector
+                yield statCollector.start();
+            }
+            if (enable_process_tracer === 'true') {
+                // Start process tracer
+                yield processTracer.start();
+            }
             logger.info(`Initialization completed`);
         }
         catch (error) {
