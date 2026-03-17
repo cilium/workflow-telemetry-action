@@ -1,0 +1,32 @@
+name: "Feature Toggle Demo"
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  with_toggle:
+    name: With feature toggle
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v5
+    - name: Start local workflow telemetry
+      uses: ./
+      with:
+        enable_step_tracer: "true"
+        enable_stat_collector: "false"
+        enable_process_tracer: "false"
+    - name: Run dummy job
+      run: sleep 5
+  without_toggle:
+    name: Without feature toggle
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v5
+    - name: Start local workflow telemetry
+      uses: ./
+    - name: Run dummy job
+      run: sleep 5
