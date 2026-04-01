@@ -1,50 +1,14 @@
 # workflow-telemetry-action
 
-A GitHub Action to track and monitor the 
-- workflow runs, jobs and steps
-- resource metrics 
-- and process activities 
-of your GitHub Action workflow runs. 
-If the run is triggered via a Pull Request, it will create a comment on the connected PR with the results 
-and/or publishes the results to the job summary. 
-
-The action traces the jobs' step executions and shows them in trace chart,
-
-And collects the following metrics:
-- CPU Load (user and system) in percentage
-- Memory usage (used and free) in MB
-- Network I/O (read and write) in MB
-- Disk I/O (read and write) in MB
-
-And traces the process executions (only supported on `Ubuntu`) 
-
-as trace chart with the following information:
-- Name
-- Start time
-- Duration (in ms)
-- Finish time
-- Exit status as success or fail (highlighted as red)
-
-and as trace table with the following information:
-- Name
-- Id
-- Parent id
-- User id
-- Start time
-- Duration (in ms)
-- Exit code
-- File name
-- Arguments
+A GitHub Action to track and monitor the workflow runs, jobs and steps of your
+GitHub Action workflow runs. This fork receives minimal maintenance from Cilium
+committers.
 
 ### Example Output
 
 An example output of a simple workflow run will look like this.
 
 ![Step Trace Example](/images/step-trace-example.png)
-
-![Metrics Example](/images/metrics-example.png)
-
-![Process Trace Example](/images/proc-trace-example.png)
 
 ## Usage
 
@@ -58,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Collect Workflow Telemetry
-        uses: catchpoint/workflow-telemetry-action@v2
+        uses: cilium/workflow-telemetry-action@v2
 ```
 
 ## Configuration
